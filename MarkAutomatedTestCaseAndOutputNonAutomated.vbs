@@ -1,9 +1,11 @@
 Sub a()
-    aa = Array("000", "001", "004", "017", "030", "043", "056", "067", "071", "075", "080", "092", "100", "112", "124", "134", "142", "151", "160", "172", "180", "190", "198", "203", "211", "216", "224", "229", "237", "242", "250", "255", "263", "269", "271", "310", "316", "324", "331", "338", "345", "352", "359", "366", "373", "379", "386", "395", "401", "409", "418", "426", "432", "440", "446", "491", "494", "074", "186", "268")
+    testCaseFolderPath = "C:\STAF\testsuites\sCloud\CasePool\EventNotifications\"
+    testCaseName = "EventNotifications"
+    aa = getTestCaseNames(testCaseFolderPath, testCaseName)
     case_type = "FAST"
-    Open "D:\bbb.txt" For Output As #1
+    Open "C:\Users\sean_c_chen\Desktop\bbb.txt" For Output As #1
     
-    For i = 7 To 534
+    For i = 7 To 536
         If IsInArray(Right(Range("B" & i).Value, 3), aa) Or InStr(LCase(Range("C" & i).Value), "but cancel") Then
             Range("J" & i).Value = "Yes"
         Else
@@ -11,7 +13,7 @@ Sub a()
         End If
     Next
     
-    For i = 7 To 534
+    For i = 7 To 536
         If Range("H" & i).Value = case_type And Not Range("J" & i) = "Yes" And Not Range("M" & i) = "Disable" Then
             append_str = ""
             If InStr(Range("C" & i), "trigger") Or InStr(Range("C" & i), "Trigger") Then
@@ -25,6 +27,20 @@ Sub a()
     Close #1
 End Sub
 
+Function getTestCaseNames(folderPath, testCaseName)
+    Dim ret(536)
+    i = 0
+    file = Dir(folderPath)
+    While (file <> "")
+        If InStr(file, testCaseName & "_") > 0 Then
+            ret(i) = Left(Right(file, 6), 3)
+            i = i + 1
+        End If
+        file = Dir
+    Wend
+    getTestCaseNames = ret
+End Function
+
 Function IsInArray(stringToBeFound As String, arr As Variant) As Boolean
-  IsInArray = (UBound(Filter(arr, stringToBeFound)) > -1)
+    IsInArray = (UBound(Filter(arr, stringToBeFound)) > -1)
 End Function
