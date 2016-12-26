@@ -2,7 +2,7 @@ Sub a()
     testCaseFolderPath = "C:\STAF\testsuites\sCloud\CasePool\EventNotifications\"
     testCaseName = "EventNotifications"
     aa = getTestCaseNames(testCaseFolderPath, testCaseName)
-    case_type = "FAST"
+    case_type = ("RAT", "FAST")
     Open "C:\Users\sean_c_chen\Desktop\bbb.txt" For Output As #1
     
     For i = 7 To 536
@@ -14,7 +14,7 @@ Sub a()
     Next
     
     For i = 7 To 536
-        If Range("H" & i).Value = case_type And Not Range("J" & i) = "Yes" And Not Range("M" & i) = "Disable" Then
+        If IsInArray(Range("H" & i).Value, case_type) And Not Range("J" & i) = "Yes" And Not Range("M" & i) = "Disable" Then
             append_str = ""
             If InStr(Range("C" & i), "trigger") Or InStr(Range("C" & i), "Trigger") Then
                 append_str = "trigger alert"
